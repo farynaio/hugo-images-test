@@ -31,7 +31,7 @@
 
 
 {{ if $params.size }}
-{{ $src = ($orig.Resize $params.size).RelPermalink }}
+{{ $src = ($orig.Fit $params.size).RelPermalink }}
 {{ else }}
 {{ $src = $orig.RelPermalink }}
 {{ end }}
@@ -41,10 +41,10 @@
 {{ range $key, $value := $params.sizes }}
 {{ $w := index (split $value "x") 0 }}
 {{ if eq $index 0 }}
-{{ $srcset = printf "%s %sw" ($orig.Resize $value).RelPermalink $w }}
+{{ $srcset = printf "%s %sw" ($orig.Fit $value).RelPermalink $w }}
 {{ $sizes = printf "%s %svw" (printf "(min-width: %spx)" $key) $w }}
 {{ else }}
-{{ $srcset = printf "%s, %s %sw" $srcset ($orig.Resize $value).RelPermalink $w }}
+{{ $srcset = printf "%s, %s %sw" $srcset ($orig.Fit $value).RelPermalink $w }}
 {{ $sizes = printf "%s, %s %svw" $sizes (printf "(min-width: %spx)" $key) $w }}
 {{ end }}
 {{ $index = add $index 1 }}
