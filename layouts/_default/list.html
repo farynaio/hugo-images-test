@@ -1,0 +1,14 @@
+{{ define "main" }}
+
+{{ partial "page-title.html" . }}
+
+<section class="list">
+  {{ $paginator := .Paginate .Data.Pages 6 }}
+  {{ range $paginator.Pages }}
+  {{ .Render "post" }}
+  {{ end }}
+
+  {{ partial "pagination/pagination-list" . }}
+</section>
+
+{{ end }}

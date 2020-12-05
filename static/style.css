@@ -1,0 +1,15 @@
+img {
+  height: auto;
+  max-width: 100%;
+}
+
+section.list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+article {
+  width: 314px;
+  margin: 20px 10px 0 0;
+}

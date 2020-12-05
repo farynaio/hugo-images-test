@@ -1,0 +1,60 @@
+{{ $placeholder := "images/placeholder.jpg" }}
+{{ $params := (dict "lazy" true "sizes" (dict) "class" "" "alt" "" "title" "") }}
+{{ $params = merge $params . }}
+
+{{ $width := "" }}
+{{ $height := "" }}
+{{ $sizes := ""}}
+
+{{ if $params.size }}
+{{ $size := split .size "x" }}
+{{ $width = index $size 0 }}
+{{ $height = index $size 1 }}
+{{ end }}
+
+{{ $srcset := "" }}
+{{ $src := "" }}
+
+{{ if $params.static }}
+{{ $src = $params.src | relURL }}
+{{ else }}
+{{ with $params.page.Resources.GetMatch $params.src }}
+{{ $orig := . }}
+
+{{ if eq $width "" }}
+{{ $width = $orig.Width }}
+{{ end }}
+
+{{ if eq $height "" }}
+{{ $height = $orig.Height }}
+{{ end }}
+
+
+{{ if $params.size }}
+{{ $src = ($orig.Resize $params.size).RelPermalink }}
+{{ else }}
+{{ $src = $orig.RelPermalink }}
+{{ end }}
+
+{{ $index := 0 }}
+
+{{ range $key, $value := $params.sizes }}
+{{ $w := index (split $value "x") 0 }}
+{{ if eq $index 0 }}
+{{ $srcset = printf "%s %sw" ($orig.Resize $value).RelPermalink $w }}
+{{ $sizes = printf "%s %svw" (printf "(min-width: %spx)" $key) $w }}
+{{ else }}
+{{ $srcset = printf "%s, %s %sw" $srcset ($orig.Resize $value).RelPermalink $w }}
+{{ $sizes = printf "%s, %s %svw" $sizes (printf "(min-width: %spx)" $key) $w }}
+{{ end }}
+{{ $index = add $index 1 }}
+{{ end }}
+{{ end }}
+{{ end }}
+
+{{ with $params }}
+<img src="{{ if .lazy }}{{ $placeholder | relURL }}{{ else }}{{ $src }}{{ end }}" alt="{{ .alt }}" class="{{ if .lazy }}lazy{{ end }} {{ .class }}" data-src="{{ $src }}" data-srcset="{{ $srcset }}" data-sizes="{{ $sizes }}" title="{{ with $params.title }}{{ . }}{{ end }}">
+<noscript>
+  <img src="{{ $src }}" alt="{{ .alt }}" class="{{ .class }}" srcset="{{ $srcset }}">
+</noscript>
+{{ end }}

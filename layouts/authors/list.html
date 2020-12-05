@@ -1,0 +1,13 @@
+{{ define "main" }}
+
+<h2>Articles</h2>
+<section class="list">
+  {{ $paginator := .Paginate (where (where .Data.Pages "Type" "posts") "Date.Unix" "<" .Date.Unix) 6 }}
+  {{ range $paginator.Pages }}
+  {{ .Render "post" }}
+  {{ end }}
+
+  {{ partial "pagination/pagination-list" . }}
+</section>
+
+{{ end }}

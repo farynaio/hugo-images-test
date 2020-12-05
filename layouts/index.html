@@ -1,0 +1,14 @@
+{{ define "main" }}
+
+<section class="list">
+  {{ $paginator := .Paginate (where .Site.RegularPages "Type" "posts") 6 }}
+  {{ range $paginator.Pages }}
+  {{ .Render "post" }}
+  {{ end }}
+
+  {{ partial "pagination/pagination-list" . }}
+</section>
+
+<script src="{{ `lazy-image.js` | relURL }}"></script>
+
+{{ end }}

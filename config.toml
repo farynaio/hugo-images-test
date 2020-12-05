@@ -1,0 +1,16 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "My New Hugo Site"
+theme = "ananke"
+
+[params]
+custom_css = ["style.css"]
+  
+[imaging]
+quality = 90
+
+[taxonomies]
+  # category = "categories"
+  # series = "series"
+  tag = "tags"
+  author = "authors"
